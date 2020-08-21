@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const patientSchema = new Schema({
+const patientSchema = new mongoose.Schema({
     
   phone: {
       type: Number,
@@ -13,10 +13,12 @@ const patientSchema = new Schema({
       required:true,
   },
   doctor: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref:'Doctor'
   }
-});
+}, {
+    timestamps: true
+  });
 
 
 const Patient = mongoose.model('Patient', patientSchema);

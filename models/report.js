@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
-const reportSchema = new Schema({
+const reportSchema = new mongoose.Schema({
     
   doctor: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Doctor'
   },
 
   patient: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Patient'
   },
 
