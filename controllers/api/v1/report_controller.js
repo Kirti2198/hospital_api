@@ -4,33 +4,63 @@ const Report = require('../../../models/report');
 
 module.exports.create_report= async function(req,res){
   
+
+  console.log("Inside report controller");
+
   const doctor =req.doctor._id;
   console.log("Doctor Saab:"+ doctor);
- try{
-     const{status,date} = req.body;
-     let report;
-     report = await Report.find({
-     date
-    });
-    
-    report  = await Report.create({
-      doctor,
-      status,
-      date 
-    });
-    console.log("Report:"+report)
 
-    return res.status(201).json({
-      success: true,
-      body: report,
-      msg:'Report Created Sucessfully!'
+ try{
+    console.log("Inside try");
+
+    const report = await Report.create({
+      doctor:doctor,
+      patient:req.params.id,
+      status:req.body.status
+    });
+
+    return res.status(200).json({
+      success:true
     });
  }
  catch (err) {
   // Error handling
   return res.status(401).json({
     success: false,
-    msg:'Error Occoured!'
+    msg:err.message,
   });
 }
+}
+
+module.exports.all_reports= async function(req,res){
+   try{
+    const reports = Report.find({ "patient": req.params.id });
+    reports.exec(function (err, report) {
+      return res.send(report);
+  })
+   }
+   catch (err) {
+    // Error handling
+    return res.status(401).json({
+      success: false,
+      msg:err.message,
+    });
+  }
+  
+}
+
+module.exports.report_by_status = async (req,res) => {
+
+  try {
+      const reports = Report.find({ "status": req.params.status });
+      reports.exec(function (err, rep) {
+          return res.send(rep);
+      });
+
+  } catch (err) { 
+      return res.status(500).json({
+          message: err.message
+      });
+  }
+
 }
